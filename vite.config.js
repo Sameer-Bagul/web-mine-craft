@@ -1,10 +1,19 @@
+import { defineConfig } from 'vite';
+
 /**
  * @type {import('vite').UserConfig}
  */
-export default {
+export default defineConfig({
   base: '/',
   build: {
     sourcemap: true,
-    outDir: 'dist'
-  }
-}
+    outDir: 'dist',
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
+  },
+  publicDir: 'public'
+});
