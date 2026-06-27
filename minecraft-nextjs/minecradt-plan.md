@@ -25,12 +25,12 @@ To support high performance, database persistence, and multiplayer capabilities,
     *   Sharing TypeScript interfaces between your frontend and backend ensures your player and world states are always in sync.
 
 ### 3. Database & Persistence
-*   **Primary Database:** **PostgreSQL**
-    *   Used for persistent, structured data: User accounts, authentication, inventory schemas, and saved world metadata.
-*   **ORM:** **Prisma** or **Drizzle**
-    *   For type-safe database querying.
-*   **World / Chunk Storage:** **MongoDB** or **Redis** (Optional)
-    *   Minecraft worlds consist of millions of blocks. Storing chunk data as serialized blobs or JSON documents in MongoDB is often more efficient than relational tables. Redis can be used to cache active chunks in memory for lightning-fast reads.
+*   **Primary Database:** **MongoDB Atlas**
+    *   Used for persistent, structured data: User accounts, authentication, inventory schemas, and saved world metadata. MongoDB's document structure is ideal for storing chunks and blocks efficiently.
+*   **ORM / Driver:** **Mongoose**
+    *   For schema definition and simple querying inside Next.js API routes.
+*   **World / Chunk Storage:** **MongoDB**
+    *   Minecraft worlds consist of millions of blocks. Storing chunk data as JSON documents in MongoDB is extremely efficient compared to relational tables.
 
 ---
 
@@ -53,11 +53,11 @@ We will convert the project in 4 distinct phases to ensure stability at each ste
 3.  **Infinite Generation:** Implement a "sliding window" chunk generation algorithm (using Web Workers to offload heavy calculations from the main thread) so chunks load and unload dynamically as the player moves.
 
 ### Phase 3: Backend, Database, & User Accounts
-**Goal:** Allow players to create accounts and save their progress.
-1.  **Backend Setup:** Initialize a basic Node.js + Express + Prisma server.
-2.  **Database Design:** Set up PostgreSQL to store `Users` (id, username, password hash) and `SavedWorlds` (seed, player_position).
-3.  **Authentication:** Implement simple JWT-based authentication.
-4.  **World Saving:** Create API endpoints to save modified chunks (blocks the player has placed or destroyed) and load them when the player reconnects.
+**Goal:** Allow players to create accounts, save their progress, and navigate through a modern landing page.
+1.  **Routing & UI:** Create a Landing Page (`/`), Auth Pages (`/login`, `/register`), and remap the actual game to `/play`.
+2.  **Database Setup:** Setup MongoDB Atlas and connect it using Mongoose in Next.js API routes.
+3.  **Authentication:** Implement JWT-based authentication for user signup and login.
+4.  **World Saving:** Create API routes (`/api/chunks`) to save modified chunks to MongoDB and load them when the player reconnects.
 
 ### Phase 4: Multiplayer Capabilities
 **Goal:** Add other players into the world.
